@@ -1,0 +1,16 @@
+// Up and Down arrows shoving market direction
+.arrow-up,
+.arrow-down {
+	display: inline-block;
+	width: 14px;
+	height: 11px;
+	background-size: 100% 100%;
+}
+
+.arrow-up {
+	background-image: $arrow-up;
+}
+
+.arrow-down {
+	background-image: $arrow-down;
+}

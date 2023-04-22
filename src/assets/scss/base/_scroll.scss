@@ -1,0 +1,28 @@
+// Scrollable part inside display: flex. Used in .card
+.flex-grow-scroll {
+	overflow : auto;
+	flex-grow: 1;
+}
+
+// Custom Scroll Bar
+::-webkit-scrollbar {
+	border-radius: 6px;
+}
+
+::-webkit-scrollbar:horizontal {
+	height: 10px;
+}
+
+::-webkit-scrollbar:vertical {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background   : $scroll-bar-bg;
+	border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+	background   : $scroll-thumb-bg;
+	border-radius: 6px;
+}

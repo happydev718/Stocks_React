@@ -1,0 +1,20 @@
+.dropdown-menu {
+	border-color: $dropdown-menu-border-color;
+	background-color: $dropdown-menu-bg;
+}
+
+.dropdown-item {
+	&:hover,
+	&:focus {
+		background-color: $dropdown-item-bg-hover;
+	}
+
+	&.no-hover {
+		cursor: default !important;
+		
+		&:hover,
+		&:focus {
+			background-color: transparent !important;  
+		}
+	}
+}

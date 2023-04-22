@@ -1,0 +1,117 @@
+import {connect} from 'react-redux'
+import React, {Component} from 'react'
+import {Link} from 'react-router-dom';
+import {Col, Row} from 'react-bootstrap';
+import configURL2 from '../config/endpoints.json'
+import configURL3 from '../config/player2id.json'
+
+const DATAURL = configURL2.playerdataURL;
+const player2id = configURL3.player2id;
+
+class PlayerStats2 extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			error: null,
+			balace: 1000000,
+			teamname: null,
+			twitter: null,
+			country_id: null,
+			national_team: null,
+			founded: null,
+			logo_path: null,
+			venue_id: null
+		}
+		this.tokenName = [];
+		this.tokenbal = [];
+
+		this.getFullData = this.getFullData.bind(this);
+	}
+
+	async getFullData() {
+		let playerName = this.props.id, id, url, fulldata;
+		id = player2id[playerName];
+		url = DATAURL + id;
+		await fetch(url, {
+			method: 'GET',
+			headers: {
+				"Content-Type": "text/plain"
+			}
+		}).then(response => response.json())
+			.then(data => {
+				fulldata = data;
+			}).catch(error => {
+				this.setState({error: error});
+			});
+		return fulldata;
+	}
+
+	async componentDidMount() {
+		let fulldata = await this.getFullData();
+		if (fulldata) {
+			this.setState({
+				teamname: fulldata.team.data.name,
+				twitter: fulldata.team.data.twitter,
+				country_id: fulldata.team.data.country_id,
+				national_team: fulldata.team.data.national_team,
+				founded: fulldata.team.data.founded,
+				logo_path: fulldata.team.data.logo_path,
+				venue_id: fulldata.team.data.venue_id
+			});
+		}
+	}
+
+	render() {
+		return (
+			<div className="card">
+				<div className="card-header">
+					<h3 className="card-title mb-1">
+						{this.state.teamname}
+					</h3>
+					<div>
+						<span className="text-muted">
+							Twitter: {' '}
+						</span>
+						<h5 className="d-inline">
+							{this.state.twitter}
+						</h5>
+					</div>
+				</div>
+
+				<Row className="card-body d-flex m-0">
+					<Col lg="6" md="6" sm="6" xs="6" className="mb-3">
+						<h6 className="fs-6 fw-medium text-muted mb-1">
+							Country:
+						</h6>
+						<h4>
+							{this.state.country_id}
+						</h4>
+					</Col>
+					<Col lg="6" md="6" sm="6" xs="6" className="mb-3">
+						<h6 className="fs-6 fw-medium text-muted mb-1">
+							Venue:
+						</h6>
+						<h4>
+							{this.state.venue_id}
+						</h4>
+					</Col>
+					<Col lg="6" md="6" sm="6" xs="6" className="mb-3">
+						<h6 className="fs-6 fw-medium text-muted mb-1">
+							Founded:
+						</h6>
+						<h4>
+							{this.state.founded}
+						</h4>
+					</Col>
+				</Row>
+			</div>
+		);
+	}
+
+}
+function mapStateToProps(state) {
+	return {
+	}
+}
+
+export default connect(mapStateToProps)(PlayerStats2)

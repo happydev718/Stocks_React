@@ -1,0 +1,22 @@
+// Responsive queries
+
+// Min
+@mixin min768 {
+	@media only screen and (min-width: 768px) {
+		@content;
+	}
+}
+
+// Max
+@mixin max1199 {
+	@media only screen and (max-width: 1199px) {
+		@content;
+	}
+}
+
+@mixin max767 {
+	@media only screen and (max-width: 767px) {
+		@content;
+	}
+}
+

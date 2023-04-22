@@ -1,0 +1,123 @@
+.swal2-popup {
+	width: 350px;
+	padding: 0;
+	background-color: $main-bg;
+	border-radius: $radius;
+	border: 1px solid $border-color;
+	color: inherit;
+}
+
+.swal2-title,
+.swal2-html-container,
+.swal2-actions {
+	padding: 24px;
+}
+
+.swal2-title,
+.swal2-html-container {
+	border-bottom: 1px solid $border-color;
+	text-align: left;
+}
+
+.swal2-title {
+	font-size: 20px;
+	font-weight: 600;
+}
+
+.swal2-html-container {
+	margin: 0;
+	font-size: inherit;
+}
+
+.swal2-close {
+	position: absolute;
+	top: 29px;
+	right: 20px;
+	width: auto;
+	height: auto;
+	font-size: inherit;
+	margin: 0;
+	font-size: 11px;
+	outline: none !important;
+}
+
+.swal2-actions {
+	width: 100%;
+	margin: 0;
+
+	button {
+		flex-grow: 1;
+		margin: 0;
+
+		&.swal2-styled {
+			padding: 8px 16px;
+			font-size: 12px;
+			font-weight: 600;
+			border-radius: $radius;
+		
+			&:focus {
+				box-shadow: none;
+			}
+		}
+
+		& + button {
+			margin-left: 16px;
+		}
+	}
+
+	.swal2-confirm {
+		background-color: $success;
+	}
+
+	.swal2-cancel {
+		background-color: $danger;
+	}
+
+}
+
+@mixin cross($size: 20px, $color: currentColor, $thickness: 1px) {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: none;
+	position: relative;
+	width: $size;
+	height: $size;
+  
+	&:before,
+	&:after {
+	  content: '';
+	  position: absolute;
+	  top: ($size - $thickness) / 2;
+	  left: 0;
+	  right: 0;
+	  height: $thickness;
+	  background: $color;
+	  border-radius: $thickness;
+	}
+  
+	&:before {
+	  transform: rotate(45deg);
+	}
+  
+	&:after {
+	  transform: rotate(-45deg);
+	}
+  
+	span {
+	  display: block;
+	}
+  
+  }
+  // Example 3.
+  .light {
+	  .cross-1px {
+		  @include cross(18px, #171A1E);  
+	  }
+  }
+  // Example 3.
+  .dark {
+	  .cross-1px {
+		  @include cross(18px, #fefefe);  
+	  }
+  }

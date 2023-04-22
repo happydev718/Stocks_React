@@ -1,0 +1,12 @@
+.about-player {
+
+}
+
+.about-player__photo {
+	width: 54px;
+	min-width: 54px;
+	height: 54px;
+	margin-right: 12px;
+	border-radius: $radius;
+}
+

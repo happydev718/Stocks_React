@@ -1,0 +1,504 @@
+import React, {Component, useEffect, useState, Fragment} from "react";
+import {Navbar, Nav, NavDropdown, Dropdown, Container, Button} from "react-bootstrap";
+import {connect} from "react-redux";
+import {Link} from "react-router-dom";
+import {ThemeConsumer} from "../context/ThemeContext";
+import {tokens} from "../config/ExchangeTokens";
+import {
+	accountSelector,
+	etherBalanceSelector,
+	userEmailSelector,
+	userNameSelector,
+} from "../store/selectors";
+import {db} from "./firebase/firebase";
+import {auth} from "../components/firebase";
+import moment from 'moment';
+
+const Notification = () => {
+
+	const account = localStorage.getItem("account-address");
+	const [notifications, setNotifications] = useState([]);
+
+	async function clearnotify() {
+		let query_new = await db.collection("notification").doc(account).get();
+		if (query_new.data() !== null && query_new.data() !== undefined && query_new.data() !== []) {
+			let notifications = query_new.data();
+			for (let i = 0; i < Object.entries(notifications).length; i++) {
+				let key_value = Object.entries(notifications)[i][0].toString();
+				if (key_value.includes("_new")) {
+					let token_name = key_value.replace("_new", "");
+					if (notifications[token_name] !== undefined && notifications[token_name] !== null && notifications[token_name].length > 0) {
+						await db.collection("notification").doc(account).update({[`${token_name}`]: notifications[token_name].concat(notifications[key_value])});
+					}
+					else {
+						await db.collection("notification").doc(account).update({[`${token_name}`]: notifications[key_value]});
+					}
+					await db.collection("notification").doc(account).update({[`${key_value}`]: []});
+				}
+			}
+		}
+		setNotifications([]);
+	}
+
+	async function checked_notification(timestamp) {
+		let query_new = await db.collection("notification").doc(account).get();
+		if (query_new.data() !== null && query_new.data() !== undefined && query_new.data() !== []) {
+			let notifications = query_new.data();
+			for (let i = 0; i < Object.entries(notifications).length; i++) {
+				let key_value = Object.entries(notifications)[i][0].toString();
+				if (key_value.includes("_new")) {
+					let each_notifications = notifications[key_value];
+					let current_notification = null;
+					for (let j = 0; j < each_notifications.length; j++) {
+						if (each_notifications[j].timestamp === timestamp) {
+							current_notification = each_notifications[j];
+							break;
+						}
+					}
+					each_notifications.pop(each_notifications.indexOf(current_notification));
+					let token_name = key_value.replace("_new", "");
+					if (notifications[token_name] !== undefined && notifications[token_name] !== null && notifications[token_name].length > 0) {
+						await db.collection("notification").doc(account).update({[`${token_name}`]: notifications[token_name].concat([current_notification])});
+					}
+					else {
+						await db.collection("notification").doc(account).update({[`${token_name}`]: [current_notification]});
+					}
+					await db.collection("notification").doc(account).update({[`${key_value}`]: each_notifications});
+				}
+			}
+		}
+	}
+
+	useEffect(() => {
+		async function fetchData() {
+			if (account) {
+				db.collection('notification').doc(account).onSnapshot(async (snap) => {
+					let new_notificatons = [];
+					let query_new = await db.collection("notification").doc(account).get();
+					if (query_new.data() !== null && query_new.data() !== undefined && query_new.data() !== []) {
+						let notifications = query_new.data();
+						for (let i = 0; i < Object.entries(notifications).length; i++) {
+							let key_value = Object.entries(notifications)[i][0].toString();
+							if (key_value.includes("_new")) {
+								let each_notifications = notifications[key_value];
+								for (let j = 0; j < each_notifications.length; j++) {
+									new_notificatons.push(each_notifications[j]);
+								}
+							}
+						}
+					}
+					setNotifications(new_notificatons);
+				});
+			}
+		}
+		fetchData();
+	}, [account]);
+
+	return (
+		<Dropdown className="header-btn notifications d-block">
+			<Dropdown.Toggle variant="default" className="header-btn__btn">
+				<i className="icon ion-md-notifications header-btn__icon"></i>
+				{notifications.length > 0 && <span className="circle-pulse"></span>}
+			</Dropdown.Toggle>
+			<Dropdown.Menu align="end">
+				{notifications.length > 0 &&
+					<Fragment>
+						<div className="dropdown-header d-flex align-items-center justify-content-between" onClick={() => clearnotify()}>
+							{notifications.length} New Notifications
+							<span className="notifications__clear-btn">Clear All</span>
+						</div>
+						<div className="dropdown-body">
+							{notifications.length > 0 && notifications.map((notification, index) => (
+								<button key={index.toString() + "_notification"} className="dropdown-item notification" onClick={() => checked_notification(notification.timestamp)}>
+									<div className="notification__icon-currency">
+										{/* Etherium Violet SVG */}
+										<svg xmlns="http://www.w3.org/2000/svg" width="44" height="45" viewBox="0 0 44 45" fill="none">
+											<rect y="0.5" width="44" height="44" rx="6" fill="url(#paint0_linear_202_4091)" />
+											<g clip-path="url(#clip0_202_4091)">
+												<path d="M22 9.66669C22.2194 9.66665 22.4355 9.72079 22.629 9.82429C22.8226 9.9278 22.9875 10.0775 23.1093 10.26L30.848 21.8694L23.8787 24.7734L22.2653 12.9374C22.2227 12.6307 21.7773 12.6307 21.736 12.9374L20.1227 24.7734L13.152 21.8694L20.8907 10.26C21.0125 10.0775 21.1774 9.9278 21.3709 9.82429C21.5645 9.72079 21.7805 9.66665 22 9.66669ZM22.5133 28.2307L30.2707 24.9987L23.1107 35.74C22.9889 35.9229 22.8239 36.0729 22.6303 36.1766C22.4366 36.2804 22.2203 36.3347 22.0007 36.3347C21.781 36.3347 21.5647 36.2804 21.371 36.1766C21.1774 36.0729 21.0124 35.9229 20.8907 35.74L13.7307 24.9987L21.4867 28.2307C21.6493 28.2985 21.8238 28.3335 22 28.3335C22.1762 28.3335 22.3507 28.2985 22.5133 28.2307Z" fill="#BA94FF" />
+											</g>
+											<defs>
+												<linearGradient id="paint0_linear_202_4091" x1="22" y1="0.5" x2="22" y2="48.9" gradientUnits="userSpaceOnUse">
+													<stop stop-color="#A97AFF" stop-opacity="0.43" />
+													<stop offset="1" stop-color="#A97AFF" stop-opacity="0" />
+												</linearGradient>
+												<clipPath id="clip0_202_4091">
+													<rect width="32" height="32" fill="white" transform="translate(6 7)" />
+												</clipPath>
+											</defs>
+										</svg>
+									</div>
+									<div className="content">
+										Order Filled for {(parseFloat(notification.amount)).toFixed(2)}  {notification.id} -
+										<br />
+										Price : £{(parseFloat(notification.price)).toFixed(2)}
+										<div className="notification__date">
+											{moment.unix((Math.floor(notification.timestamp / 1000))).format('DD/MM h:mm A')}
+										</div>
+									</div>
+								</button>
+							))}
+						</div>
+					</Fragment>
+				}
+				{notifications.length === 0 && <div className="notifications__no-notifications dropdown-item no-hover">No new Notifications</div>}
+			</Dropdown.Menu>
+		</Dropdown>
+	)
+}
+
+class Header extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			width: 0,
+			height: 0,
+			tokenbal: [],
+			exchangeses: [],
+			token_percent: [],
+			token_price: [],
+			tokenName: [],
+			loading: false,
+			isOpen: false,
+			menuOpen : false,
+			menuRewardOpen : false,
+			menuotherOpen : false
+		}
+		this.readAccountDappValue = this.readAccountDappValue.bind(this);
+		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+		// this.readTickerData = this.readTickerData.bind(this);
+	}
+
+	updateWindowDimensions() {
+		this.setState({width: window.innerWidth, height: window.innerHeight});
+	}
+
+	readAccountDappValue = async () => {
+		let tokenbal = [];
+		let exchangeses = [];
+		let token_price = [];
+		let token_percent = [];
+		let tokenName = [];
+		for (let i = 0; i < tokens.length; i++) {
+			tokenName.push(tokens[i]);
+		}
+		let token_rows = [];
+		const snapshot = await db.collection("tokens").get();
+		snapshot.forEach((doc) => {
+			token_rows.push(doc.data());
+		});
+		for (let i = 0; i < tokenName.length; i++) {
+			for (let j = 0; j < token_rows.length; j++) {
+				if (token_rows[j].name === tokenName[i]) {
+					token_price.push(token_rows[j].price);
+					token_percent.push(token_rows[j].percent);
+					tokenbal.push(token_rows[j].tokenbal);
+				}
+			}
+		}
+		this.setState({loading: true});
+		this.setState({tokenName: tokenName});
+		this.setState({tokenbal: tokenbal});
+		this.setState({exchangeses: exchangeses});
+		this.setState({token_price: token_price});
+		this.setState({token_percent: token_percent});
+	};
+
+	async componentDidMount() {
+		let el = document.querySelector("#darkTheme");
+		if (el) {
+			el.addEventListener("click", function () {
+				if (document.body.classList.contains("dark")) {
+					document.body.classList.add('light');
+					document.body.classList.remove('dark');
+				} else {
+					document.body.classList.add('dark');
+					document.body.classList.remove('light');
+				}
+			});
+		}
+		this.readAccountDappValue();
+		let uid = localStorage.getItem("account-info");
+		if (uid) {
+			const query = await db.collection("users").doc(uid).get();
+			if (query.data() !== undefined && query.data() !== null && query.data() !== []) {
+				let user = query.data();
+				let name = user.Firstname;
+				let email = user.email;
+				this.setState({uid: uid});
+				this.setState({email: email});
+				this.setState({name: name});
+			}
+		}
+	}
+
+	logout() {
+		let visited = localStorage["alreadyVisited"];
+		if (visited) {
+			localStorage.clear();
+			localStorage["alreadyVisited"] = true;
+		}
+		this.setState({uid: ""});
+		auth.doSignOut();
+		window.location.reload();
+	}
+
+	render() {
+		let {
+			tokenName,
+			token_price,
+			token_percent,
+			uid,
+			name,
+			email,
+		} = this.state;
+		return (
+			<Container fluid>
+				<Navbar expand="xl" className="card mb-0" style={{zIndex : '100'}}>
+					<Container fluid className="d-flex">
+						<Link className={`navbar-brand`} to="/">
+							<ThemeConsumer>
+								{({data}) => {
+									return data.theme === "light" ? (
+										<img src={"/img/logo-light-mode.svg"} alt="logo" />
+									) : (
+										<img src={"/img/logo-dark-mode.svg"} alt="logo" />
+									);
+								}}
+							</ThemeConsumer>
+						</Link>
+						<Navbar.Collapse id="basic-navbar-nav">
+							<Nav className="navbar-nav mr-auto">
+								<a className="nav-link" href="/players/pdummett">
+									Transfer Market
+								</a>
+								<Link to="/players" className="nav-link">
+									All Players
+								</Link>
+								<Link to="/ipos" className="nav-link">
+									IPO's
+								</Link>
+								<Link to="/portfolio" className="nav-link">
+									Portfolio
+								</Link>
+								<NavDropdown title="Rewards">
+									<Link to="/rankings" className="dropdown-item">
+										Live Rankings
+									</Link>
+									<Link to="/teamoftheweek" className="dropdown-item">
+										Team Of The Week
+									</Link>
+									<Link to="/teamofthemonth" className="dropdown-item">
+										Team Of The Month
+									</Link>
+									<Link to="/teamoftheseason" className="dropdown-item">
+										Team Of The Season
+									</Link>
+									<Link to="/inplay" className="dropdown-item">
+										Inplay Rewards
+									</Link>
+									<Link to="/myrewards" className="dropdown-item">
+										My Rewards
+									</Link>
+									<Link to="/payouts" className="dropdown-item">
+										Reward Wallets
+									</Link>
+								</NavDropdown>
+								<NavDropdown title="Other">
+									<a className="dropdown-item" href="/recents">
+										Market Activity
+									</a>
+									<a className="dropdown-item" href="/openorders">
+										My Open Orders
+									</a>
+									<Link to="/news" className="dropdown-item">
+										News
+									</Link>
+									<Link to={{pathname: `https://link.medium.com/iurre80R4mb`}} target="_blank" className="dropdown-item">
+										FAQ
+									</Link>
+									<Link to={{pathname: `https://discord.gg/nCgkhNZesZ`}} target="_blank" className="dropdown-item">
+										Discord
+									</Link>
+								</NavDropdown>
+								<div className="refer">
+									<Link to="/refer" className="nav-link">
+										Refer a Friend
+									</Link>
+								</div>
+								<div className="refer">
+									<Link to="/sf20" className="nav-link">
+										SF20
+									</Link>
+								</div>
+							</Nav>
+						</Navbar.Collapse>
+						<Nav className={`navbar-nav ml-auto d-flex flex-row align-items-center`}>
+							<ThemeConsumer className="header-img-icon">
+								{({data, update}) => (
+									<div className='header-btn theme-toggler my-auto' id="darkTheme" onClick={update}>
+										<i className="theme-toggler__icon theme-toggler__dark-icon icon ion-md-moon"></i>
+										<i className="theme-toggler__toggler"></i>
+										<i className="theme-toggler__icon theme-toggler__light-icon icon ion-md-sunny"></i>
+									</div>
+								)}
+							</ThemeConsumer>
+							{
+								this.state.uid !== "" && this.state.uid !== null && this.state.uid !== undefined ?
+									(
+										<>
+										<Fragment>
+											<Notification {...this.props}></Notification>
+											{/* User Menu */}
+											<Dropdown className="header-btn user-menu">
+												<Dropdown.Toggle variant="default" className="header-btn__btn">
+													<i className="icon ion-md-person header-btn__icon"></i>
+												</Dropdown.Toggle>
+												<Dropdown.Menu align="end">
+													<div className="dropdown-header text-center pt-3">
+														<div className="user-menu__avatar">
+															<i className='icon ion-md-person'></i>
+															<img src="https://data.stocksfc.com/liveratings/Rewards/stats/data/Premier_League/Player_images/612.png" alt="" className="user-menu__avatar-img" />
+														</div>
+														<h5 className="text-muted fw-normal mb-0">
+															{/* Display name. If no name display email */}
+															{name ? name : email}
+														</h5>
+													</div>
+													<hr className="dropdown-divider" />
+													<div className="dropdown-item no-hover">
+														<Button variant='outline-success' size='sm' className="w-100">Deposit</Button>
+													</div>
+													<hr className="dropdown-divider" />
+													<div className="dropdown-body">
+														<Link to="/profile" className="dropdown-item">
+															<i className="icon ion-md-person me-4 text-muted fs-4"></i>
+															Profile
+														</Link>
+														<Link to="/settings" className="dropdown-item">
+															<i className="icon ion-md-cog me-4 text-muted fs-4"></i>
+															Settings
+														</Link>
+														<a
+															href="/login"
+															className="dropdown-item"
+															onClick={() => this.logout()}
+														>
+															<i className="icon ion-md-log-out me-4 text-muted fs-4"></i>
+															<span>Log out</span>
+														</a>
+													</div>
+												</Dropdown.Menu>
+											</Dropdown>
+										</Fragment>
+										<div className="header-btn mobile-menu dropdown">
+											<Navbar.Toggle aria-controls="basic-navbar-nav" />
+										</div>
+										</>
+									)
+									:
+									(
+										<Nav>
+											{/* <a className="nav-link" href="/signup">
+												<span>Register</span>
+											</a>
+											<a className="nav-link" href="/login">
+												<span>Login</span>
+											</a> */}
+										</Nav>
+									)
+							}
+						</Nav>
+					</Container>
+				</Navbar>
+				<div className="ticker-wrap" style={{width: "0%"}}>
+					<div className="ticker">
+						{
+							tokenName.map((obj, index) =>
+								token_percent[index] == null ? (
+									<a href={`/players/${obj}`} key={index.toString() + "a1"}>
+										<div className="ticker__item" key={index.toString() + "div1"}>
+											<div className="up">
+												{" "}
+												{obj} :{" "}
+												<span className="price">
+													£0.00
+												</span>{"  "}
+												<span className="percent">
+													<span className="arrow-up"></span>
+													0.00%
+												</span>
+											</div>
+										</div>
+									</a>
+								) : (
+									<>
+										{
+											(parseFloat(token_percent[index]) >= 0) ? (
+												<a href={`/players/${obj}`} key={index.toString() + "a2"}>
+													<div className="ticker__item" key={index.toString() + "div2"}>
+														<div className="up">
+															{" "}
+															{obj}:{" "}
+															<span className="price">
+																£{((parseFloat(token_price[index]))).toFixed(2)}
+															</span>{" "}
+															<span className="percent">
+																<span className="arrow-up"></span>
+																{(parseFloat(token_percent[index])).toFixed(2)} %
+															</span>
+														</div>
+													</div>
+												</a>
+											) : (
+												<a href={`/players/${obj}`} key={index.toString() + "a3"}>
+													<div className="ticker__item" key={index.toString() + "div3"}>
+														<div className="down">
+															{obj} :{" "}
+															<span className="price">
+																£{((parseFloat(token_price[index]))).toFixed(2)}
+															</span>{" "}
+															<span className="percent">
+																<span className="arrow-down"></span>
+																{(parseFloat(token_percent[index])).toFixed(2)}%
+															</span>
+														</div>{" "}
+													</div>
+												</a>
+											)}
+									</>
+								)
+							)}
+					</div>
+				</div>							<div>
+							<Link className={`navbar-brand`} to="/">
+								
+								<ThemeConsumer>
+									{({data}) => {
+										return data.theme === "light" ? (
+											<img src={"/img/logo-light-mode.svg"} className="avatar" alt="logo" />
+										) : (
+											<img src={"/img/logo-dark-mode.svg"} className="avatar" alt="logo" />
+										);
+									}}
+								</ThemeConsumer>
+							</Link>
+							</div>
+			</Container>
+		);
+	}
+}
+
+function mapStateToProps(state) {
+	const userName = userNameSelector(state);
+	const userEmail = userEmailSelector(state);
+
+	return {
+		userName: userName,
+		account: accountSelector(state),
+		userEmail: userEmail,
+		etherBalance: etherBalanceSelector(state),
+	};
+}
+
+export default connect(mapStateToProps)(Header);

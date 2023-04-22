@@ -1,0 +1,99 @@
+// Dark Theme Variables
+// -------------------------------
+// Body
+$body-bg: #171A1E;
+$body-color: #FDFDFD;
+$dark-color: #828386;
+
+// Header
+$nav-link-color: $body-color;
+$nav-link-color-active: rgba($nav-link-color, 0.5);
+$header-custom-btn-bg: #303236;
+$header-custom-btn-color: #fff;
+$theme-toggler-icon-color: $dark-color;
+
+// SVGs
+// Navbar Dropdown Arrow
+$navbar-dropdown-toggle-arrow-img: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none"%3E%3Cpath fill-rule="evenodd" clip-rule="evenodd" d="M0.230169 0.209376C0.528748 -0.0777189 1.00353 -0.0684095 1.29063 0.230169L5 4.16792L8.70938 0.230169C8.99647 -0.0684094 9.47125 -0.0777189 9.76983 0.209376C10.0684 0.496471 10.0777 0.971254 9.79063 1.26983L5.54063 5.76983C5.39922 5.91689 5.20401 6 5 6C4.79599 6 4.60078 5.91689 4.45938 5.76983L0.209376 1.26983C-0.0777189 0.971254 -0.0684095 0.496471 0.230169 0.209376Z" fill="%23FDFDFD"/%3E%3C/svg%3E');
+$navbar-dropdown-toggle-arrow-img-opened: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M9.76983 5.79062C9.47125 6.07772 8.99647 6.06841 8.70937 5.76983L5 1.83208L1.29062 5.76983C1.00353 6.06841 0.528747 6.07772 0.230167 5.79062C-0.0684109 5.50353 -0.0777207 5.02875 0.209374 4.73017L4.45937 0.230167C4.60078 0.0831084 4.79599 -9.75562e-07 5 -9.93398e-07C5.20401 -1.01123e-06 5.39922 0.0831084 5.54062 0.230167L9.79062 4.73017C10.0777 5.02875 10.0684 5.50353 9.76983 5.79062Z' fill='%23FDFDFD'/%3E%3C/svg%3E");
+
+// Up/Down Market Arrows
+$arrow-up: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='12' viewBox='0 0 9 12' fill='none'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M1.96701e-07 7.5L4.33013 1.89276e-07L8.66025 7.5L5.08013 7.5L5.08013 12L3.58013 12L3.58013 7.5L1.96701e-07 7.5Z' fill='%233DBA4F'/%3E%3C/svg%3E");
+$arrow-down: url("data:image/svg+xml,%0A%3Csvg width='9' height='12' viewBox='0 0 9 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M1.96701e-07 4.5L4.33013 12L8.66025 4.5L5.08013 4.5L5.08013 -2.22059e-07L3.58013 -1.56492e-07L3.58013 4.5L1.96701e-07 4.5Z' fill='%23FF5656'/%3E%3C/svg%3E%0A");
+
+// Theme
+$success: #3DBA4F;
+$danger: #FF5656;
+$info: #37A2CC;
+$light: #E6E6E7;
+
+// Other Colors
+$main-bg: #2A2D34; // Background for dropdown, input
+$main-bg-darken: #24272E; // .order-book-row
+$muted: #A8A9AB;
+$muted-2: #616266; // Input disabled color
+$border-color: #4A4D54;
+
+// Dropdown
+$dropdown-menu-bg: $main-bg;
+$dropdown-menu-border-color: $border-color;
+$dropdown-item-bg-hover: $dropdown-menu-border-color;
+$dropdown-header-bg: $main-bg-darken;
+$dropdown-divider-bg: $border-color;
+$dropdown-border-color: $border-color;
+$dropdown-border-radius: $radius;
+$dropdown-min-width: 224px;
+
+// Notifications
+$notifications-muted-color: $muted;
+
+// Tooltip
+$tooltip-toggler-color: $dark-color;
+
+// Bootstrap Customization
+// ------------------------------
+$theme-colors: (
+  "success": $success,
+  "info": $info,
+  "light": $light,
+  "danger": $danger,
+);
+$text-muted: $muted;
+
+// Card
+$card-border-color: #34363B;
+$card-bg: #1E2025;
+$card-bg-hover: $main-bg;
+
+// Input
+$input-bg: $main-bg;
+$input-group-addon-bg: $main-bg;
+$input-group-addon-color: $body-color; // Used in MarketTrade inputs
+$input-disabled-color: $muted-2;
+$input-disabled-bg: $input-bg;
+
+// Check
+$form-check-input-border: 1px solid $muted-2;
+$form-check-input-border-radius: 4px;
+
+// Tooltip
+$tooltip-bg: $main-bg;
+$tooltip-border-color: $border-color;
+
+// Nav Tabs
+$nav-tabs-border-color: $border-color;
+$nav-tabs-link-hover-border-color: transparent;
+$nav-tabs-link-active-color: $body-color;
+$nav-tabs-link-active-bg: transparent;
+$nav-tabs-link-active-border-color: $body-color;
+$nav-tabs-link-color: $muted-2; // Default, not active
+
+// Button
+$btn-disabled-bg: $dark-color;
+
+// Chart
+$chart-dropdown-bg: $card-bg;
+
+// Scrollbar
+$scroll-bar-bg: darken($card-bg, 5%);
+$scroll-thumb-bg: lighten($card-bg, 10%);

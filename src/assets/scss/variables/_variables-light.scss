@@ -1,0 +1,100 @@
+// Dark Theme Variables
+// -------------------------------
+// Body
+$body-bg: #F9F9F9;
+
+$body-color: #171A1E;
+$dark-color: #6A6C6F;
+
+// Header
+$nav-link-color: $body-color;
+$nav-link-color-active: rgba($nav-link-color, 0.5);
+$header-custom-btn-bg: #F2F2F2;
+$header-custom-btn-color: $dark-color;
+$theme-toggler-icon-color: $dark-color;
+
+// SVGs
+// Navbar Dropdown Arrow
+$navbar-dropdown-toggle-arrow-img: url("data:image/svg+xml,%0A%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0.230169 0.209376C0.528748 -0.0777189 1.00353 -0.0684095 1.29063 0.230169L5 4.16792L8.70938 0.230169C8.99647 -0.0684094 9.47125 -0.0777189 9.76983 0.209376C10.0684 0.496471 10.0777 0.971254 9.79063 1.26983L5.54063 5.76983C5.39922 5.91689 5.20401 6 5 6C4.79599 6 4.60078 5.91689 4.45938 5.76983L0.209376 1.26983C-0.0777189 0.971254 -0.0684095 0.496471 0.230169 0.209376Z' fill='%23171A1E'/%3E%3C/svg%3E%0A");
+$navbar-dropdown-toggle-arrow-img-opened: url("data:image/svg+xml,%0A%3Csvg width='18' height='14' viewBox='0 0 18 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg filter='url(%23filter0_d_1_3)'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M13.7698 5.79062C13.4713 6.07772 12.9965 6.06841 12.7094 5.76983L9 1.83208L5.29063 5.76983C5.00353 6.06841 4.52875 6.07772 4.23017 5.79062C3.93159 5.50353 3.92228 5.02875 4.20938 4.73017L8.45938 0.230168C8.60078 0.0831094 8.79599 0 9 0C9.20401 0 9.39922 0.0831094 9.54063 0.230168L13.7906 4.73017C14.0777 5.02875 14.0684 5.50353 13.7698 5.79062Z' fill='%23171A1E'/%3E%3C/g%3E%3Cdefs%3E%3Cfilter id='filter0_d_1_3' x='4.76837e-07' y='0' width='18' height='14' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'%3E%3CfeFlood flood-opacity='0' result='BackgroundImageFix'/%3E%3CfeColorMatrix in='SourceAlpha' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0' result='hardAlpha'/%3E%3CfeOffset dy='4'/%3E%3CfeGaussianBlur stdDeviation='2'/%3E%3CfeComposite in2='hardAlpha' operator='out'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'/%3E%3CfeBlend mode='normal' in2='BackgroundImageFix' result='effect1_dropShadow_1_3'/%3E%3CfeBlend mode='normal' in='SourceGraphic' in2='effect1_dropShadow_1_3' result='shape'/%3E%3C/filter%3E%3C/defs%3E%3C/svg%3E%0A");
+
+// Up/Down Market Arrows
+$arrow-up: url("data:image/svg+xml,%0A%3Csvg width='10' height='12' viewBox='0 0 10 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0.980469 7.5L5.3106 1.89276e-07L9.64072 7.5L6.0606 7.5L6.0606 12L4.5606 12L4.5606 7.5L0.980469 7.5Z' fill='%2318BD61'/%3E%3C/svg%3E%0A");
+$arrow-down: url("data:image/svg+xml,%0A%3Csvg width='9' height='12' viewBox='0 0 9 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0.320313 4.5L4.65044 12L8.98057 4.5L5.40044 4.5L5.40044 -2.22059e-07L3.90044 -1.56492e-07L3.90044 4.5L0.320313 4.5Z' fill='%23EC4A4A'/%3E%3C/svg%3E%0A");
+
+// Theme
+$success: #18BD61;
+$danger: #EC4A4A;
+$info: #1EB1EC;
+$light: #E6E6E7; // Not changed
+
+// Other Colors
+$main-bg: #F2F2F2; // Background for dropdown, input
+$main-bg-darken: #F9F9F9; // .order-book-row
+$muted: #97989A;
+$muted-2: #F2F2F2; // Input disabled color. Same as input default
+$border-color: #E8E8E9;
+
+// Dropdown
+$dropdown-menu-bg: $main-bg;
+$dropdown-menu-border-color: $border-color;
+$dropdown-item-bg-hover: $dropdown-menu-border-color;
+$dropdown-header-bg: $main-bg-darken;
+$dropdown-divider-bg: $border-color;
+$dropdown-border-color: $border-color;
+$dropdown-border-radius: $radius;
+$dropdown-min-width: 224px;
+
+// Notifications
+$notifications-muted-color: $muted;
+
+// Tooltip
+$tooltip-toggler-color: $dark-color;
+
+// Bootstrap Customization
+// ------------------------------
+$theme-colors: (
+  "success": $success,
+  "info": $info,
+  "light": $light,
+  "danger": $danger,
+);
+$text-muted: $muted;
+
+// Card
+$card-border-color: $border-color;
+$card-bg: #fff;
+$card-bg-hover: $main-bg;
+
+// Input
+$input-bg: $main-bg;
+$input-group-addon-bg: $main-bg;
+$input-group-addon-color: $body-color; // Used in MarketTrade inputs
+$input-disabled-color: $muted-2;
+$input-disabled-bg: $input-bg;
+
+// Check
+$form-check-input-border: 1px solid $muted-2;
+$form-check-input-border-radius: 4px;
+
+// Tooltip
+$tooltip-bg: $main-bg;
+$tooltip-border-color: $border-color;
+
+// Nav Tabs
+$nav-tabs-border-color: $border-color;
+$nav-tabs-link-hover-border-color: transparent;
+$nav-tabs-link-active-color: $body-color;
+$nav-tabs-link-active-bg: transparent;
+$nav-tabs-link-active-border-color: $body-color;
+$nav-tabs-link-color: $muted-2; // Default, not active
+
+// Button
+$btn-disabled-bg: $dark-color;
+
+// Chart
+$chart-dropdown-bg: $card-bg;
+
+// Scrollbar
+$scroll-bar-bg: darken($card-bg, 5%);
+$scroll-thumb-bg: lighten($card-bg, 10%);

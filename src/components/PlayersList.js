@@ -1,0 +1,441 @@
+// import Web3 from 'web3'
+// import Exchanges from "../store/exchanges";
+import React, {Component, Fragment} from 'react'
+import {Row, Col, Button, OverlayTrigger, Tooltip, Image} from "react-bootstrap";
+import {connect} from 'react-redux'
+import {tokens} from "../config/ExchangeTokens.js";
+import Spinner from './Spinner'
+// import Swal from 'sweetalert2';
+import {
+	accountSelector,
+} from "../store/selectors";
+import {db} from "./firebase/firebase";
+// import configURL from '../config/wallets.json'
+import configURL2 from '../config/endpoints.json'
+import configURL3 from '../config/player2id.json'
+import configURL4 from '../config/fullnames.json'
+import {ethPriceURL} from "./constants/routes.js";
+import axios from 'axios';
+
+// const deadwallet = configURL.deadWallet;
+const IMGURL = configURL2.imgURL;
+var player2id = configURL3.player2id;
+const fullname = configURL4.fullname;
+
+class PlayersList extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			width: 0,
+			height: 0,
+			loading: false,
+			isOpen: false,
+			token_rows: [],
+			filtername: "",
+			ethPriceData: 2000,
+		}
+		this.readAccountDappValue = this.readAccountDappValue.bind(this);
+		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+	}
+
+	updateWindowDimensions() {
+		this.setState({width: window.innerWidth, height: window.innerHeight});
+	}
+
+	readAccountDappValue = async () => {
+		let {loading} = this.state;
+		let token_rows = [];
+		let active_tokens = [];
+		const snapshot = await db.collection("tokens").get();
+		snapshot.forEach(doc => {
+			token_rows.push(doc.data());
+		});
+		for (var i = 0; i < tokens.length; i++) {
+			for (let j = 0; j < token_rows.length; j++) {
+				if (token_rows[j].name === tokens[i]) {
+					let totalPayout = 0;
+					let payoutpershare = 0;
+					if (token_rows[j].totalPayout !== undefined && token_rows[j].totalPayout !== null) {
+						totalPayout = (parseFloat(token_rows[j].totalPayout)).toFixed(2);
+					}
+					if (token_rows[j].payoutpershare !== undefined && token_rows[j].payoutpershare !== null) {
+						payoutpershare = (parseFloat(token_rows[j].payoutpershare)).toFixed(2);
+					}
+					active_tokens.push({showFlag: true, name: token_rows[j].name, tokenbal: parseFloat(token_rows[j].tokenbal), price: parseFloat(token_rows[j].price), percent: parseFloat(token_rows[j].percent), sell: parseFloat(token_rows[j].sell), buy: parseFloat(token_rows[j].buy), totalPayout: totalPayout, payoutpershare: payoutpershare, position: (token_rows[j].position)});
+				}
+			}
+		}
+		loading = true;
+		this.setState({loading});
+		this.setState({token_rows: active_tokens});
+		let ethPriceData = await axios.get(ethPriceURL);
+		if (ethPriceData.status === 200 && ethPriceData.data !== undefined) {
+			this.setState({ethPriceData: ethPriceData.data.USD});
+		}
+	}
+
+	openModal = () => {
+		this.setState({isOpen: true}, () => {
+			this.readAccountDappValue(this.props.account);
+		});
+	}
+	closeModal = () => this.setState({isOpen: false});
+
+	onChange = (e) => {
+		this.setState({filtername: e.target.value});
+		let token_rows = this.state.token_rows;
+		if (e.target.value === '') {
+			for (var i = 0; i < token_rows.length; i++) {
+				token_rows[i].showFlag = false;
+			}
+		} else {
+			for (let i = 0; i < token_rows.length; i++) {
+				console.log(fullname[token_rows[i].name])
+				if (fullname[token_rows[i].name].toLowerCase().indexOf(e.target.value.toLowerCase()) > -1) {
+					token_rows[i].showFlag = true;
+				}
+				else {
+					token_rows[i].showFlag = false;
+				}
+			}
+		}
+		console.log(e.target.value, token_rows)
+		this.setState({token_rows: token_rows});
+	}
+
+	sort_tokens(keyWord) {
+		if (this.state.token_rows.length > 1) {
+			let token_rows = this.state.token_rows;
+			if (parseFloat(token_rows[0][`${keyWord}`]) >= parseFloat(token_rows[token_rows.length - 1][`${keyWord}`])) {
+				token_rows.sort(function (x, y) {
+					return parseFloat(x[`${keyWord}`]) - parseFloat(y[`${keyWord}`]);
+				});
+			} else {
+				token_rows.sort(function (x, y) {
+					return parseFloat(y[`${keyWord}`]) - parseFloat(x[`${keyWord}`]);
+				});
+			}
+			this.setState({token_rows: token_rows});
+		}
+	}
+
+	componentDidMount() {
+		this.updateWindowDimensions(); window.addEventListener('resize', this.updateWindowDimensions);
+		if (this.props.account) {
+			this.readAccountDappValue(this.props.account);
+		}
+		else {
+			this.readAccountDappValue(localStorage.getItem("account-address"));
+		}
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.updateWindowDimensions);
+	}
+
+	render() {
+		let {loading, token_rows} = this.state;
+		return (
+			<div className="container-fluid">
+				<div className="card card--overflow all-players">
+					<div className="card-header">
+						<Row className='align-items-center'>
+							<Col md>
+								<h3 className="card-title">
+									All Players{' '}
+									<OverlayTrigger
+										placement="right"
+										overlay={
+											<Tooltip id="tooltip-all-players">
+												<ul className="list mb-0">
+													<li>
+														<h4 className="d-inline">
+															Total Supply:
+														</h4>
+														<p className="d-inline text-muted">
+															The total number of tokens currently in circulation on the platform for the player.
+														</p>
+													</li>
+													<li>
+														<h4 className="d-inline">
+															Current Price:
+														</h4>
+														<p className="d-inline text-muted">
+															The current average price of the token.
+														</p>
+													</li>
+													<li>
+														<h4 className="d-inline">
+															24Hr Change:
+														</h4>
+														<p className="d-inline text-muted">
+															The percentage that the token has increased or decreased in price within the last 24 hours.
+														</p>
+													</li>
+													<li>
+														<h4 className="d-inline">
+															Rewards Paid:
+														</h4>
+														<p className="d-inline text-muted">
+															The total amount of rewards that have been paid out to holders of the player.
+														</p>
+													</li>
+													<li>
+														<h4 className="d-inline">
+															Payout Per Share:
+														</h4>
+														<p className="d-inline text-muted">
+															The total earnings gained for holding one token.
+														</p>
+													</li>
+													<li>
+														<h4 className="d-inline">
+															Position:
+														</h4>
+														<p className="d-inline text-muted">
+															The starting position of the player in the last game, a players position can change.
+														</p>
+													</li>
+												</ul>
+											</Tooltip>
+										}
+									>
+										{({ref, ...triggerHandler}) => (
+											<div className="tooltip-trigger" ref={ref} {...triggerHandler}>
+												<i className="fas fa-info-circle"></i>
+											</div>
+										)}
+									</OverlayTrigger>
+								</h3>
+							</Col>
+							<Col md='4'>
+								<div className="input-group">
+									<span className="input-group-text">
+										<i className="icon ion-md-search input-fix-height"></i>
+									</span>
+									<input
+										type="text"
+										className="form-control"
+										placeholder="Search Player"
+										aria-describedby="inputGroup-sizing-sm"
+										onChange={(e) => this.onChange(e)}
+										value={this.state.filtername}
+										required
+									/>
+								</div>
+							</Col>
+						</Row>
+					</div>
+					<div className="flex-grow-scroll updateScrollBar">
+						<div className="card-body card-body--table">
+							<div className="table-responsive">
+								<table className="table">
+									{
+										this.state.width > 768 ? <tbody>
+											<tr>
+												<th>Photo</th>
+												<th>Player</th>
+												<th>Position</th>
+												<th>Total Supply&nbsp;<i className="fa fa-sort" role='button' onClick={(e) => {this.sort_tokens("tokenbal")}}></i></th>
+												<th>Current Price&nbsp;<i className="fa fa-sort" role='button' onClick={(e) => {this.sort_tokens("price")}}></i></th>
+												<th>24Hr Change&nbsp;<i className="fa fa-sort" role='button' onClick={(e) => {this.sort_tokens("percent")}}></i></th>
+												<th>Rewards Paid&nbsp;<i className="fa fa-sort" role='button' onClick={(e) => {this.sort_tokens("totalPayout")}}></i></th>
+												<th>Payout Per Share&nbsp;<i className="fa fa-sort" role='button' onClick={(e) => {this.sort_tokens("payoutpershare")}}></i></th>
+												<th>Best Sell Price&nbsp;<i className="fa fa-sort" role='button' onClick={(e) => {this.sort_tokens("sell")}}></i></th>
+												<th>Best Buy Price&nbsp;<i className="fa fa-sort" role='button' onClick={(e) => {this.sort_tokens("buy")}}></i></th>
+											</tr>
+											{
+												token_rows.map((obj, key) => (
+													<>
+														{
+															(obj.showFlag && this.state.filtername != "") &&
+															<tr key={key} className='player-row' data-href="exchange-light.html">
+																<td><img className="table-player-photo" src={`${IMGURL + player2id[obj.name]}.png`} style={{width: "60%"}} alt="" /></td>
+																<td><a className='player-row__name' href={`/players/${obj.name}`}>{fullname[obj.name]}</a></td>
+																<td>{obj.position}</td>
+																<td>{((parseFloat(obj.tokenbal)).toFixed(2))}</td>
+																{obj.price ? <td>£{((parseFloat(obj.price)).toFixed(2))}</td> : <td>£0.00</td>}
+																{
+																	obj.percent !== 0 && obj.percent ?
+																		(obj.percent >= 0 ?
+																			<td className="text-success">{((parseFloat(obj.percent)).toFixed(2))}%</td> :
+																			<td className="text-danger">{((parseFloat(obj.percent)).toFixed(2))}%</td>
+																		)
+																		: <td className="text-success">0.00%</td>
+																}
+																{
+																	obj.totalPayout !== null && obj.totalPayout !== undefined ?
+																		<td>£{((parseFloat(obj.totalPayout)).toFixed(2))}</td> : <td>£{((parseFloat(0)).toFixed(2))}</td>
+																}
+																{
+																	obj.payoutpershare !== null && obj.payoutpershare !== undefined ?
+																		<td>£{((parseFloat(obj.payoutpershare)).toFixed(2))}</td> : <td>£{((parseFloat(0)).toFixed(2))}</td>
+																}
+																<td>
+																	<Button
+																		variant="danger"
+																		href={`/players/${obj.name}`}
+																		disabled={!obj.sell}
+																		className={`w-100 ${obj.sell && 'blink-danger'}`}
+																	>
+																		{
+																			obj.sell ?
+																				<Fragment>
+																					£{(parseFloat(obj.sell)).toFixed(2)}
+																				</Fragment>
+																				:
+																				'Unavailable'
+																		}
+																	</Button>
+																</td>
+																<td>
+																	{
+																		<Button
+																			variant="success"
+																			href={`/players/${obj.name}`}
+																			disabled={!obj.buy}
+																			className={`w-100 ${obj.buy && 'blink-success'}`}
+																		>
+																			{
+																				obj.buy ?
+																					<Fragment>
+																						£{(parseFloat(obj.buy)).toFixed(2)}
+																					</Fragment>
+																					:
+																					'Unavailable'
+																			}
+																		</Button>
+																	}
+																</td>
+															</tr>
+														}
+													</>
+												))
+											}
+											{!loading && <Spinner type='table' />}
+										</tbody> : <tbody>{
+											token_rows.map((obj, key) => {
+												return (
+												<>
+													{
+														(obj.showFlag && this.state.filtername != "") && <div key={key} className="pt-3">
+															<Row className="m-0 d-flex p-2 pb-0">
+																<Row className="m-0 p-0 w-13">
+																	<Image className="table-player-photo p-0" src={`${IMGURL + player2id[obj.name]}.png`} alt=""></Image>
+																</Row>
+																<Row className="m-0 p-0 w-75">
+																	<a className='player-row__name' href={`/players/${obj.name}`}>{fullname[obj.name]}</a>
+																	<p className="text-muted">{"Position:  "}<span>{obj.position}</span></p>
+																</Row>
+															</Row>
+															<Row className="m-0 pt-2 pb-1" style={{paddingLeft: "0.5rem", paddingRight: "0.5rem"}}>
+																<hr className="m-0 p-0" />
+															</Row>
+															<Row className="m-0 d-flex p-1 pl-0 pr-0">
+																<Row className="m-0 p-0 w-50">
+																	<div className="text-muted fs-5 my-auto">{"Total Supply:"}</div>
+																	<div className="fs-5 my-auto">{(parseFloat(obj.tokenbal)).toFixed(2)}</div>
+																	{/* <div className="fs-5 my-auto">£{(parseFloat(obj.cost)).toFixed(2)} <span className="text-muted fs-7 my-auto">&nbsp;&nbsp;{(parseFloat(obj.cost) * this.state.ethPriceData).toFixed(2)}&nbsp;ETH</span></div> */}
+																</Row>
+																<Row className="fw-medium text-capitalize m-0 p-0 w-50">
+																	<div className="text-muted fs-5 my-auto">{"Current Price:"}</div>
+																	{
+																		isNaN(obj.price) ? <div className="fs-5 my-auto">£{(parseFloat(obj.cost)).toFixed(2)} <span className="text-muted fs-7 my-auto">&nbsp;&nbsp;{(parseFloat(obj.cost) * this.state.ethPriceData).toFixed(2)}&nbsp;ETH</span></div>
+																			: <div className="fs-5 my-auto">£0.00<span className="text-muted fs-7 my-auto">&nbsp;&nbsp;0.00&nbsp;ETH</span></div>
+																	}
+																</Row>
+															</Row>
+															<Row className="m-0 d-flex p-1 pl-0 pr-0">
+																<Row className="m-0 p-0 w-50">
+																	<div className="text-muted fs-5 my-auto">{"24hr Change:"}</div>
+																	{
+																		obj.percent !== 0 && obj.percent ?
+																			(obj.percent >= 0 ? <div className="fs-5 my-auto text-success">£{(parseFloat(obj.percent)).toFixed(2)}</div> : <div className="fs-5 my-auto text-danger">£{(parseFloat(obj.percent)).toFixed(2)}</div>) : <div className="text-success">0.00%</div>
+																	}
+																</Row>
+																<Row className="fw-medium text-capitalize m-0 p-0 w-50">
+																	<div className="text-muted fs-5 my-auto">{"Rewards Paid:"}</div>
+																	{obj.totalPayout !== null && obj.totalPayout !== undefined ?
+																		<div className="fs-5 my-auto">£{(parseFloat(obj.totalPayout)).toFixed(2)} <span className="text-muted fs-7 my-auto">&nbsp;&nbsp;{(parseFloat(obj.totalPayout) * this.state.ethPriceData).toFixed(2)}&nbsp;ETH</span></div>
+																		: <div> £0.00<span className="text-muted fs-7 my-auto">&nbsp;&nbsp;0.00ETH</span></div>
+																	}
+																</Row>
+															</Row>
+															<Row className="m-0 d-flex p-1 pl-0 pr-0">
+																<Row className="m-0 p-0 w-50">
+																	<div className="text-muted fs-5 my-auto">{"Payout Per Share:"}</div>
+																	{obj.payoutpershare !== null && obj.payoutpershare !== undefined ?
+																		<div className="fs-5 my-auto">£{(parseFloat(obj.payoutpershare)).toFixed(2)} <span className="text-muted fs-7 my-auto">&nbsp;&nbsp;{(parseFloat(obj.payoutpershare) * this.state.ethPriceData).toFixed(2)}&nbsp;ETH</span></div>
+																		: <div> £0.00<span className="text-muted fs-7 my-auto">&nbsp;&nbsp;0.00ETH</span></div>
+																	}
+																</Row>
+															</Row>
+															<Row className="m-0 pt-2 pb-1" style={{paddingLeft: "0.5rem", paddingRight: "0.5rem"}}>
+																<hr className="m-0 p-0" />
+															</Row>
+															<Row className="m-0 d-flex p-1">
+																<Row className="m-0 p-1 w-50">
+																	<div className="text-muted fs-6 my-auto">{"Best Sell Price:"}</div>
+																	<Button
+																		variant="danger"
+																		href={`/players/${obj.name}`}
+																		disabled={!obj.sell}
+																		className={`w-100 ${obj.sell && 'blink-danger'}`}
+																	>
+																		{
+																			obj.sell ?
+																				<Fragment>
+																					£{(parseFloat(obj.sell)).toFixed(2)}
+																				</Fragment>
+																				:
+																				'Unavailable'
+																		}
+																	</Button>
+																</Row>
+																<Row className="m-0 p-1 w-50">
+																	<div className="text-muted fs-6 my-auto">{"Best Buy Price:"}</div>
+																	<Button
+																		variant="success"
+																		href={`/players/${obj.name}`}
+																		disabled={!obj.buy}
+																		className={`w-100 ${obj.buy && 'blink-success'}`}
+																	>
+																		{
+																			obj.buy ?
+																				<Fragment>
+																					£{(parseFloat(obj.buy)).toFixed(2)}
+																				</Fragment>
+																				:
+																				'Unavailable'
+																		}
+																	</Button>
+																</Row>
+															</Row>
+															<Row className="m-0 pt-2 pb-1">
+																<hr className="m-0 p-0" />
+															</Row>
+														</div>
+													}
+												</>
+											)})
+										}
+										</tbody>
+									}
+									{!loading && <Spinner type='table' />}
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
+}
+
+function mapStateToProps(state) {
+	return {
+		account: accountSelector(state),
+	}
+}
+
+export default connect(mapStateToProps)(PlayersList)

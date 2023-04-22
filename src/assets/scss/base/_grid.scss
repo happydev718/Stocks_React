@@ -1,0 +1,25 @@
+.sm-gutters {
+  margin-left: -10px;
+  margin-right: -10px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  & > .col,
+  & > [class*='col-'] {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+
+.lg-gutters {
+  margin-left: -16px;
+  margin-right: -16px;
+  padding-left: 16px;
+  padding-right: 16px;
+
+  & > .col,
+  & > [class*='col-'] {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}

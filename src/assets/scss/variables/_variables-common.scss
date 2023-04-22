@@ -1,0 +1,72 @@
+// Common Variables. All Themes
+// -------------------------------
+$radius: 6px; // Radius for card, input
+
+
+// Bootstrap Customization
+// ------------------------------
+// Card
+$card-border-radius : $radius;
+$card-cap-padding-y : 16px;
+$card-title-spacer-y: 12px;
+
+// Input and Button
+$input-btn-focus-box-shadow: none;
+$input-btn-font-size       : 14px;
+$input-btn-padding-y       : 10px;
+$input-btn-padding-x       : 16px;
+
+// Input
+$input-border-width : 0;
+$input-border-radius: $radius;
+
+// Button
+// All
+$btn-font-weight     : 600;
+$btn-disabled-opacity: 0.5;
+
+// Small
+$btn-padding-y-sm   : 7px;
+// $btn-padding-x-sm: ;
+$btn-font-size-sm   : 12px;
+
+// Default
+$btn-padding-y   : 8px;
+// $btn-padding-x: ;
+$btn-font-size   : 14px;
+
+// Large
+// $btn-padding-y-lg: ;
+// $btn-padding-x-lg: ;
+// $btn-font-size-lg: ;
+
+// Table
+$table-border-width: 0;
+
+// Spacers - margin and padding classes: .mb-2, px-3, etc
+$spacer: 1rem; // Bootstrap default
+$spacers: (0: 0,
+  1: $spacer * .25,
+  2: $spacer * .5,
+  3: $spacer * .75, // Used - 12px
+  4: $spacer * 1, // Used - 16px
+  5: $spacer * 1.5, // Used. MarketTrade form body margin bottom before submit button (Sell/Buy)
+);
+
+// Tooltip
+$tooltip-font-size    : 16px;
+$tooltip-max-width    : 427px;
+$tooltip-color        : inherit;
+$tooltip-border-radius: 4px;
+$tooltip-opacity      : 1;
+$tooltip-padding-y    : 16px;
+$tooltip-padding-x    : 12px;
+// $tooltip-margin;
+
+// Dropdown
+$dropdown-header-color: inherit;
+
+// Nav Tabs
+$nav-tabs-border-radius: 0;
+$nav-tabs-border-width : 0;
+$nav-link-hover-color  : inherit;

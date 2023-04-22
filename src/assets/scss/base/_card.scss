@@ -1,0 +1,59 @@
+.card {
+	display: flex;
+	margin-bottom: 20px;
+}
+
+a.card {
+	color: inherit;
+	text-decoration: none;
+
+	// &:hover,
+	// &:focus {
+	// 	background-color: $card-bg-hover;
+	// }
+}
+
+.card-header {
+	.nav-tabs,
+	.card-header__fix-padding {
+		margin-top: -$card-cap-padding-y;
+		margin-bottom: -$card-cap-padding-y;
+	}
+}
+
+.card-body {
+	
+}
+
+.card-body--table {
+	padding: 0 8px;
+}
+
+.card-title {
+	margin-bottom: 0;
+	color: $body-color;
+}
+
+// Card mask. Mask in the end of scrolling part of card. Linear gradient from transparent to dark
+.card--overflow {
+	position: relative;
+
+	.card-body {
+		margin-bottom: 40px; // Bottom offset to make table elements clickable when mask
+	}
+
+	&:after {
+		content: '';
+		display: block;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 59px;
+		background: -webkit-linear-gradient(rgba(0, 0, 0, 0), $card-bg);
+		background: linear-gradient(rgba(0, 0, 0, 0), $card-bg);
+		border-radius: $card-border-radius;
+	}
+
+}
+

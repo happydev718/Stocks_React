@@ -1,0 +1,19 @@
+// SCSS variables and mixins to do not repeat SCSS and develop faster
+// Common variables for all themes
+@import './variables/variables-common'; 
+// Theme variables
+@import './variables/variables-light';
+// Mixins - helpers to write better SCSS
+@import './mixins/mixins';
+
+// Bootstrap customized according to theme variables. !!! Should be after variables so Bootstrap will use custom variables !!!
+@import 'bootstrap/scss/bootstrap.scss'; // npm Bootstrap package
+
+// Common for all themes
+@import './base/base';
+@import './layout/layout';
+@import './module/module';
+
+// Theme styles
+@import './theme/light';
+

@@ -1,0 +1,249 @@
+.minHeight-40 {
+    min-height: 40px
+}
+
+.updateScrollBar {
+    -webkit-overflow-scrolling: touch !important;
+    touch-action              : auto !important;
+}
+
+::-webkit-scrollbar {
+    width: 0px !important;
+}
+
+::-webkit-scrollbar:horizontal {
+    height: 0px !important;
+}
+
+::-webkit-scrollbar:vertical {
+    width: 0px !important;
+}
+
+/* swal-ranking-fullScore  */
+.swal-ranking-fullScore p {
+    font-size: 0.9rem;
+}
+
+.w-60 {
+    width: 60% !important;
+}
+
+.w-40 {
+    width: 40% !important;
+}
+
+@media only screen and (max-width: 1200px) {
+    .light #root .container-fluid .card .d-inline{
+        color : black
+    }
+    .light .my-auto {
+        color : black
+    }
+    .light .player-row__name:hover {
+        color : black !important;
+        text-decoration: none !important;
+    }
+    
+    .overwrite-div {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        /* background: rgba(255,255,255,0.8); */
+        z-index: 99;
+        opacity: 1;
+        top: 0;
+        left: 0;
+        backdrop-filter: blur(2px);
+    }
+    .navbar-menu {
+        border: 1px solid gray;
+        border-radius: 10px;
+        width: 100%;
+        position: absolute;
+        z-index: 999;
+        background: #2A2D34;
+        top: 70px;
+        left: 0px;
+    }
+    #basic-navbar-nav .mr-auto .nav-item {
+        width: 100%;
+    }
+    #basic-navbar-nav .mr-auto .nav-item .dropdown-menu {
+        width: 100%;
+        border : none;
+        padding-left :15px
+    }
+    #basic-navbar-nav .mr-auto .dropdown-menu {
+        width: 100%;
+        background-color: #4A4D54;
+    }
+    .backColor {
+        background-color: #4A4D54;
+    }
+    
+}
+
+
+@media only screen and (max-width: 918px) {
+    .nav-tabs .nav-link {
+        font-size: 15px;
+    }
+}
+
+.dark .navbar .mobile-menu button  {
+    width: 32px;
+    height: 30px;
+    padding: 0px;
+    background: rgb(48, 50, 54);
+    --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(252, 252, 252, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+.light .navbar .mobile-menu button  {
+    width: 32px;
+    height: 30px;
+    padding: 0px;
+    background: #F2F2F2;
+    border: none;
+}
+.dark .navbar .mobile-menu button .navbar-toggler-icon  {
+    font-size: 14px !important;
+}
+.light .navbar .mobile-menu button .navbar-toggler-icon  {
+    font-size: 14px !important;
+}
+
+.dark .header-btn__btn, .dark .theme-toggler {
+    height: 30px !important;
+}
+.light .header-btn__btn, .dark .theme-toggler {
+    height: 30px !important;
+}
+
+@media (max-width: 768px) {
+    .all-players .card-header .align-items-center .col-md-4 {
+        margin-top: .5rem;
+    }
+
+    .mt-5.col-lg-9 .tab-content .tab-pane .my-transactions .card-header .input-group {
+        padding-top: 1rem;
+    }
+
+    .live-rankings .card-header .col-md-auto {
+        display: none;
+    }
+    .fundsBtn {
+        background-color: #3DBA4F !important;
+        color : black !important;
+    }
+}
+.dark hr{
+    border-top: var(--bs-card-border-width) solid var(--bs-card-border-color) !important;
+    opacity: 1 !important;
+}
+.light hr{
+    border-top: var(--bs-card-border-width) solid var(--bs-card-border-color) !important;
+    opacity: 1 !important;
+}
+
+.all-players .card-body .d-flex .w-25{
+    width: 13% !important;
+}
+.all-players .card-body .my-auto{
+    padding-bottom: .5rem;
+}
+
+.about-player .card-body {
+    padding-bottom: 0px !important;
+}
+
+.dark .tooltip-trigger {
+    padding: 0px !important;
+}
+
+.player-stats .card-body {
+    margin-bottom: 0 !important;
+}
+
+.light .card-body .align-items-center .col-lg-6.col-md-6.col-sm-12.col-12 h5,
+.light .card-body .align-items-center .col-lg-6.col-md-6.col-sm-12.col-12 h4 {
+    color: #171A1E;
+}
+.light .card-body .align-items-center .col-lg-6.col-md-6.col-sm-12.col-12 h4 svg path {
+    fill: #171A1E;
+}
+
+.light .my-transactions .flex-grow-scroll .card-body .my-auto.fs-4 {
+    color: #171A1E;
+}
+
+.light .search-my-transactions {
+    color: #171A1E !important;
+}
+
+.light .my-transactions .card-header {
+    background: #fff;
+}
+
+.light .my-transactions.card .flex-grow-scroll .table-responsive table {
+    color: #171A1E;
+}
+.light .deposit-history.card .flex-grow-scroll .table-responsive table {
+    color: #171A1E;
+}
+
+#rankings-tabpane-players .table-responsive .fw-medium .card-player-image {
+    width: 54px !important
+}
+
+.market-pairs-mobile .player-row .m-0.p-0.fs-7 {
+    color: #858789;
+}
+.light .market-pairs-mobile .player-row .m-0.p-0 {
+    color: #171A1E;
+}
+
+.apexcharts-toolbar {
+    top: -54px !important;
+}
+
+.apexcharts-canvas .apexcharts-toolbar .apexcharts-zoom-icon {
+    display: none;
+}
+
+.total-text {
+    text-align: end;
+    color: #171A1E !important;
+}
+.light .nav-tabs .nav-item .nav-link {
+    color: #616266;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.count-num-up, .count-num-down {
+    background: transparent;
+    color: #858789;
+    padding: 0px;
+    border: none;
+}
+
+.dark .num-count-content {
+    display:flex;
+    flex-direction: column;
+    background: #2A2D34;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 6px 0 0 6px;
+}
+
+.light .num-count-content {
+    display:flex;
+    flex-direction: column;
+    background: #F2F2F2;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 6px 0 0 6px;
+}

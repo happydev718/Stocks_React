@@ -1,0 +1,44 @@
+.auth-form {
+  width: 434px;
+  max-width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.form-separator {
+  overflow: hidden;
+  color: $border-color;
+  text-align: center;
+}
+
+.form-separator__content {
+  position: relative;
+  display: inline-block;
+  padding-right: 12px;
+  padding-left: 12px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  font-size: 16px;
+
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    width: 1000px;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    height: 1px;
+    background-color: $border-color;
+  }
+
+  &:before {
+    left: 100%;
+  }
+
+  &:after {
+    right: 100%;
+  }
+
+}

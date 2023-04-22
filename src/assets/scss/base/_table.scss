@@ -1,0 +1,115 @@
+.table {
+	th {
+		padding       : 16px 10px;
+		font-size     : 12px;
+		font-weight   : 600;
+		text-transform: uppercase;
+		color         : $muted;
+		white-space   : nowrap;
+	}
+
+	td {
+		vertical-align: middle;
+	}
+
+}
+
+.table-player-photo {
+	width        : 54px;
+	min-width    : 54px;
+	height       : 54px;
+	border-radius: $radius;
+}
+
+// Used in: market-pairs, players > all players
+.player-row {
+	>td {
+		vertical-align: middle;
+		padding-top   : 12px;
+		padding-bottom: 12px;
+	}
+}
+
+.player-row__photo {
+	width        : 40px;
+	height       : 40px;
+	border-radius: $radius;
+}
+
+.player-row__name {
+	font-size      : 14px;
+	color          : $body-color;
+	font-weight    : 500;
+	text-decoration: none;
+
+	&:hover,
+	&:focus {
+		color          : inherit;
+		text-decoration: underline;
+	}
+}
+
+// TODO: Change to class
+.table {
+	border-collapse: collapse;
+}
+
+
+// Styled as blocks to add row botton margin
+.table--order-book {
+	display: block;
+
+	thead,
+	tbody,
+	td,
+	th {
+		display: block;
+	}
+
+	tr {
+		display: flex;
+
+		>* {
+			width: 33.33%;
+		}
+	}
+
+}
+
+.order-book-row {
+	position        : relative;
+	margin-bottom   : 6px;
+	border-radius   : $radius;
+	background-color: $main-bg-darken;
+
+	// Gradient background
+	&:after {
+		content                   : '';
+		display                   : block;
+		position                  : absolute;
+		top                       : 0;
+		right                     : 0;
+		z-index                   : 0;
+		height                    : 100%;
+		width                     : calc(280/321)*100%;
+		border-top-right-radius   : inherit;
+		border-bottom-right-radius: inherit;
+	}
+
+	// Gradient danger
+	&[class*="danger-bg"]:after {
+		background: -webkit-linear-gradient(135deg, rgba($danger, 0.36), rgba(0, 0, 0, 0));
+		background: linear-gradient(135deg, rgba($danger, 0.36), rgba(0, 0, 0, 0));
+	}
+
+	// Gradient success
+	&[class*="success-bg"]:after {
+		background: -webkit-linear-gradient(135deg, rgba($success, 0.36), rgba(0, 0, 0, 0));
+		background: linear-gradient(135deg, rgba($success, 0.36), rgba(0, 0, 0, 0));
+	}
+
+	td {
+		position: relative;
+		z-index : 1;
+	}
+}

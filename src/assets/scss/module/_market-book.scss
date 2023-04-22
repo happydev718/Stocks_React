@@ -1,0 +1,21 @@
+$card-width: 321;
+
+@function calcWidth($value) {
+  @return ($value/$card-width)*100%;
+}
+
+.danger-bg:after { width: calcWidth(30); }
+.danger-bg-5:after { width: calcWidth(50); }
+.danger-bg-8:after { width: calcWidth(80); }
+.danger-bg-10:after { width: calcWidth(120); }
+.danger-bg-20:after { width: calcWidth(160); }
+.danger-bg-40:after { width: calcWidth(200); }
+.danger-bg-60:after { width: calcWidth(240); }
+.success-bg:after { width: calcWidth(30); }
+.success-bg-5:after { width: calcWidth(50); }
+.success-bg-8:after { width: calcWidth(80); }
+.success-bg-10:after { width: calcWidth(120); }
+.success-bg-20:after { width: calcWidth(160); }
+.success-bg-40:after { width: calcWidth(200); }
+.success-bg-60:after { width: calcWidth(240); }
+

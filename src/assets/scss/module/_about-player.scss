@@ -1,0 +1,29 @@
+.about-player {
+
+}
+
+.about-player__photo {
+	width: 54px;
+	min-width: 54px;
+	height: 54px;
+	margin-right: 12px;
+	border-radius: $radius;
+}
+.player-position {
+	margin-bottom: 0px;
+    font-size: 13px;
+    font-weight: unset;
+    margin-top: 10px;
+}
+.import-mb-0{
+	margin-bottom: 0px !important;
+}
+.body-height {
+	display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    height: 4rem;
+}
+
+

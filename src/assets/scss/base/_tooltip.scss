@@ -1,0 +1,78 @@
+.tooltip-trigger {
+	display: inline-block;
+	vertical-align: baseline;
+	// Margins to do not break layout
+	margin-top: -15px;
+	margin-bottom: -15px;
+	padding: 6px;
+	font-size: 13px;
+	color: $tooltip-toggler-color;
+	cursor: pointer;
+
+	&:hover,
+	&:focus {
+		color: $body-color;
+	}
+}
+
+.tooltip-inner {
+	border: 1px solid $tooltip-border-color;
+	text-align: left;
+}
+
+// Arrow
+.tooltip .tooltip-arrow {
+
+	// Custom Second Arrow - Border
+	&:after {
+		content: "";
+		position: absolute;
+		border-color: transparent;
+		border-style: solid;
+		border-width: 7px;
+		z-index: 0;
+	}
+
+	// Bootstrap
+	&:before {
+		z-index: 1;
+	}
+}
+
+// Custom Second Arrow - Placement
+// Left
+.bs-tooltip-start,
+.bs-tooltip-auto[data-popper-placement^=left] {
+	.tooltip-arrow:after {
+		top: -1px;
+		left: -1px;
+		border-left-color: $tooltip-border-color;
+	}
+}
+// Right
+.bs-tooltip-end,
+.bs-tooltip-auto[data-popper-placement^=right] {
+	.tooltip-arrow:after {
+		top: -1px;
+		right: -1px;
+		border-right-color: $tooltip-border-color;
+	}
+}
+// Bottom
+.bs-tooltip-bottom,
+.bs-tooltip-auto[data-popper-placement^=bottom] {
+	.tooltip-arrow:after {
+		left: -1px;
+		bottom: -1px;
+		border-bottom-color: $tooltip-border-color;
+	}
+}
+// Top
+.bs-tooltip-top,
+.bs-tooltip-auto[data-popper-placement^=top] {
+	.tooltip-arrow:after {
+		left: -1px;
+		top: -1px;
+		border-top-color: $tooltip-border-color;
+	}
+}

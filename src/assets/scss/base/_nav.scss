@@ -1,0 +1,59 @@
+// Nav Tabs
+.nav-tabs {
+
+	// Margin between items
+	.nav-item + .nav-item {
+		margin-left: 20px;
+	}
+	
+	.nav-link {
+		position: relative;
+		padding: 14px 0;
+		font-size: 18px;
+		font-weight: 600;
+		color: $nav-tabs-link-color;
+		
+		&:hover,
+		&:focus,
+		&.active {
+			color: $body-color;
+		}
+
+		// Active bottom border
+		&.active:after {
+			content: '';
+			display: block;
+			position: absolute;
+			bottom: -1px;
+			left: 0;
+			z-index: 1;
+			height: 2px;
+			width: 100%;
+			background-color: $body-color;
+		}
+	}
+}
+
+.nav-pills {
+	border: 1px solid $card-border-color;
+	border-radius: $radius;
+	background-color: $card-bg;
+	font-size: 16px;
+	font-weight: 500;
+	overflow: hidden;
+
+	.nav-link {
+		padding-top: 11px;
+		padding-bottom: 11px;
+		border-radius: 0;
+		-webkit-transition: none;
+		transition: none;
+
+		&:hover,
+		&:focus,
+		&.active {
+			color: #171A1E;
+			background-color: $card-border-color;
+		}
+	}
+}

@@ -1,0 +1,8 @@
+{
+    "deadWallet":"0xF87D55EBA9344301FB604f0F7e73c46d94FDeC73",
+    "shareburnFee" : 1,
+    "feesFee" : 1,
+    "feeAddress":"0x625d444A23826Eb604233E85Db35160f880F662d",
+    "rewardWallet":"0x625d444A23826Eb604233E85Db35160f880F662d",
+    "depositWallet":"0xF0D5BC18421fa04D0a2A2ef540ba5A9f04014BE3"
+}

@@ -1,0 +1,24 @@
+body {
+  padding-top   : 32px;
+  padding-bottom: 1px;
+
+  @include min768 {
+    padding-right: 36px;
+    padding-left : 36px;
+  }
+}
+
+.ticker-wrap {
+  @include min768 {
+    margin-right: -36px;
+    margin-left : -36px;
+  }
+}
+
+.dark {
+  background: $body-bg !important;
+}
+
+.light {
+  background: #F9F9F9 !important;
+}

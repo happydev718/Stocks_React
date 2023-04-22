@@ -1,0 +1,22 @@
+.spinner-border {
+  display           : inline-block;
+  width             : 2rem !important;
+  height            : 2rem !important;
+  border-right-color: transparent;
+  border-radius     : 50%;
+  animation         : spinner-border 0.75s linear infinite;
+}
+
+/* Cursor - pointer */
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+/* Disabled */
+.disable-pointer {
+  pointer-events: none !important;
+}
+
+.w-45px {
+  width: 45px !important;
+}

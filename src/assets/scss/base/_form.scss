@@ -1,0 +1,38 @@
+.input-group-text {
+	font-size: 12px;
+
+	// Addon icon
+	.icon {
+		font-size: 17px;
+	}
+
+	&+.form-control {
+		padding-left: 0;
+	}
+}
+
+.form-control:disabled,
+.form-control.disabled {
+	cursor: not-allowed;
+}
+
+.input-fix-height {
+	margin-top   : -7px;
+	margin-bottom: -10px;
+}
+
+.form-check {
+	font-weight: 500;
+}
+
+.light .form-check input {
+	background: #f2f2f2;
+}
+
+.light .form-check label {
+	color: #171A1E;
+}
+
+.light .form-control:focus {
+	background-color: #F2F2F2 !important;
+}

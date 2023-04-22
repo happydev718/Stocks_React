@@ -1,0 +1,80 @@
+// Outline buttons color except .btn-outline-light
+
+// All - White Color for Hover and Active
+.btn:not(.btn-light) {
+	&:hover,
+	&:focus {
+		color: $body-color;
+	}
+
+	&.btn-check:checked + .btn,
+	&:not(.btn-check) + .btn:active,
+	&.btn:first-child:active,
+	&.btn.active, .btn.show {
+		color: $body-color;
+	}
+}
+
+// Filled
+.btn-primary,
+.btn-secondary,
+.btn-info,
+.btn-success,
+.btn-warning,
+.btn-danger,
+.btn-dark {
+	color: $body-color;
+}
+
+// .btn-light {
+// 	color: $body-bg;
+// }
+.btn-light {
+	color: #171A1E;
+}
+
+// Disabled
+.btn:disabled,
+.btn.disabled,
+fieldset:disabled .btn {
+	color: inherit;
+	border-color: $btn-disabled-bg;
+	background-color: $btn-disabled-bg;
+}
+
+// Animations Definition
+// Success
+@keyframes successBlinking {
+	0% {
+		background-color: #26de81;
+		box-shadow: 0px 0px 30px 0px #26de81ad;
+	}
+	100% {
+		background-color: #1cb568;
+		box-shadow: 0px 0px 30px 0px #1cb568ad;
+	}
+}
+
+// Danger
+@keyframes dangerBlinking {
+	0% {
+		background-color: #eb0400;
+		border-color: #eb0400;
+		box-shadow: 0px 0px 30px 0px #eb0400ad;
+	}
+	100% {
+		background-color: #ff5552;
+		border-color:  #ff5552;
+		box-shadow: 0px 0px 30px 0px #ff5552ad;
+	}
+}
+
+.blink-success {
+	-webkit-animation: successBlinking 1s infinite;
+	animation: successBlinking 1s infinite;
+}
+
+.blink-danger {
+	-webkit-animation: dangerBlinking 1s infinite;
+	animation: dangerBlinking 1s infinite;
+}

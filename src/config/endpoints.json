@@ -1,0 +1,10 @@
+{
+    "backendURL" : "https://data.stocksfc.com",
+    "imgURL" : "https://data.stocksfc.com/liveratings/Rewards/stats/data/Premier_League/Player_images/",
+    "playerdataURL" : "https://data.stocksfc.com/liveratings/Rewards/stats/data/Premier_League/Player_Data/",
+    "ratingURL" : "https://data.stocksfc.com/liveratings/Rewards/live_rewards/liveSiteFeed4",
+    "teamoftheweek" : "https://data.stocksfc.com/liveratings/Rewards/results/teamoftheweek",
+    "teamofthemonth" : "https://data.stocksfc.com/liveratings/Rewards/results/teamofthemonth",
+    "teamoftheseason" : "https://data.stocksfc.com/liveratings/Rewards/results/teamoftheseason",
+    "inplay" : "https://data.stocksfc.com/liveratings/Rewards/results/weeklyInplay"
+}

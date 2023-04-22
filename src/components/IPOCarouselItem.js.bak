@@ -1,0 +1,177 @@
+import React, {Component, Fragment} from 'react'
+import {Row, Col, Button} from 'react-bootstrap';
+
+import configURL2 from '../config/endpoints.json'
+import configURL3 from '../config/player2id.json'
+import configURL5 from '../config/fullnames.json'
+import configURL6 from '../config/countdown.json'
+import {db} from "./firebase/firebase";
+
+const IMGURL = configURL2.imgURL;
+const player2id = configURL3.player2id;
+const fullname = configURL5.fullname;
+const countdownSetting = configURL6.countdown;
+
+class IPOCarouselItem extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			remaining: {
+				days: 0,
+				hours: 0,
+				minutes: 0,
+				seconds: 0,
+			},
+			totalBal: 0,
+			tokenbal: 0,
+			isExpired: false,
+			isSoon: true,
+			Date_start: new Date(),
+			position : 'Attacker'
+		}
+		this.readAccountDappValue = this.readAccountDappValue.bind(this);
+	}
+
+	// used to set and clear interval
+	timer;
+	// used to calculate the distance between "current date and time" and the "target date and time"
+	distance;
+	async componentDidMount() {
+		if (this.props.id) {
+			this.readAccountDappValue(this.props.id);
+		}
+		this.setDate();
+		this.counter();
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.timer);
+	}
+
+	setDate = async () => {
+		var member = this.props.id;
+		var configInfo = countdownSetting[member];
+		var startdate = configInfo["startdate"];
+		var enddate = configInfo["enddate"];
+		var timeInfo_start = startdate.split(',');
+		var timeInfo_end = enddate.split(',');
+		var now = new Date(), countDownDate_start, countDownDate_end;
+		countDownDate_end = new Date(timeInfo_end[0], timeInfo_end[1] - 1, timeInfo_end[2], timeInfo_end[3], timeInfo_end[4]);
+		countDownDate_start = new Date(timeInfo_start[0], timeInfo_start[1] - 1, timeInfo_start[2], timeInfo_start[3], timeInfo_start[4]);
+		this.setState({Date_start: countDownDate_start});
+		// Find the distance between now and the count down date
+		var canstart = countDownDate_start.getTime() - now.getTime();
+		this.distance = countDownDate_end.getTime() - now.getTime();
+
+		if (canstart > 0) {
+			clearInterval(this.timer);
+			this.setState({isSoon: true});
+			// await dispatch(setTimerStatus("soon"));
+		} else {
+			this.setState({isSoon: false});
+			// target date and time is less than current date and time
+			if (this.distance < 0) {
+				clearInterval(this.timer);
+				this.setState({isExpired: true});
+				// await dispatch(setTimerStatus("expired"));
+			} else {
+				this.setState({
+					remaining: {
+						days: Math.floor(this.distance / (1000 * 60 * 60 * 24)),
+						hours: Math.floor(
+							(this.distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+						),
+						minutes: Math.floor((this.distance % (1000 * 60 * 60)) / (1000 * 60)),
+						seconds: Math.floor((this.distance % (1000 * 60)) / 1000)
+					},
+					isExpired: false
+				});
+			}
+		}
+	}
+
+	counter() {
+		this.timer = setInterval(() => {
+			this.setDate();
+			if (this.props.account && this.props.account !== undefined) {
+				this.readAccountDappValue(this.props.id);
+			}
+		}, 1000);
+	}
+
+	readAccountDappValue = async (account) => {
+		let {totalBal, tokenbal} = this.state;
+		totalBal = 100000;
+		let position;
+		let token_query = await db.collection("tokens").where("name", "==", account).get();
+		if (token_query.docs.length > 0) {
+			let current_token = token_query.docs[0].data();
+			if (current_token.soldbal !== undefined && current_token.soldbal !== null) {
+				tokenbal = (parseFloat(current_token.soldbal)).toFixed(2);
+			}
+			position = current_token.longposition;
+		}
+
+		this.setState({totalBal, tokenbal});
+		this.setState({position})
+	}
+
+	render() {
+		let obj = this.props.id;
+		const {remaining, isExpired, totalBal, tokenbal, isSoon , position} = this.state;
+		return (
+			<div className="card">
+				<div className="card-header">
+					<div className="d-flex align-items-center">
+						<img className="about-player__photo" src={IMGURL + player2id[obj] + '.png'} alt='' />
+						<div>
+							<h3 className="card-title">{fullname[obj]}</h3>
+							<h3 className='player-position'>
+								<span className="text-muted">
+									Position: {' '}
+								</span>
+								{ position}
+							</h3>
+						</div>
+					</div>
+				</div>
+				<div className="card-body">
+					<Row className='mb-4'>
+						<Col md>
+							{isSoon && <h4 className='mb-0'>Starting Soon</h4>}
+							{
+								isExpired ?
+									<h4 className='mb-0'>IPO Closed</h4>
+									:
+									<Fragment>
+										<span className="text-muted">
+											Sale Ends in: {' '}
+										</span>
+										<h4 className="mb-0 d-inline">
+											{(remaining.days * 24 + remaining.hours) + 'h ' + remaining.minutes + 'm ' + remaining.seconds + 's '}
+										</h4>
+									</Fragment>
+							}
+						</Col>
+						<Col md='auto' className='ms-auto'>
+							<p className='mb-0 fw-medium'>
+								{((parseFloat(tokenbal)).toFixed(0))}/{totalBal} Sold
+							</p>
+						</Col>
+					</Row>
+					<Button
+						variant='success'
+						href={'/ipo/' + obj}
+						disabled={isSoon || isExpired}
+						className='w-100'
+					>
+						{isSoon || isExpired ? 'Unavailable' : 'Buy'}
+					</Button>
+				</div>
+			</div>
+		);
+	}
+}
+
+export default IPOCarouselItem;
+
